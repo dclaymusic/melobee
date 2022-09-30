@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<title>Melobee</title>
+<script src="snd.js"></script>
+<script src="start.js"></script>
+<script src="notes.js"></script>
+<script src="batch.js"></script>
+<script src="display.js"></script>
+<script type="text/javascript">
+
+    var hasStarted = false;
+    var infoWindow = false;
+    var pitchChoices = [];
+    var hasEnded = false;
+    var centerPitch;
+    var isInfoScreen = false;
+    var isTimeScreen = false;
+    var currentWord = [];
+    var index = 0; //how long current word is;
+    var scoreAlpha = 0.3;
+    var possibleWords = [];
+    var foundWords = [];
+    var score = 0;
+    const timeLimit = 600;
+    var practiceMode = 0;
+    var timer;
+    var clef;
+    var soundOn = true;
+
+    const numberOfSounds = 41;
+    const audioCtx = new AudioContext();
+    var bgmusic = audioCtx.createBufferSource();
+    var bgmusicgain = audioCtx.createGain();
+
+    //load all sounds
+    loadBgMusic();
+    loadclick(); loadshuffle();
+    loadTghi(); loadTfhi(); loadTehi(); loadTdhi(); loadTchi(); loadTb(); loadTa(); loadTg(); loadTf(); loadTe(); loadTd();
+    loadBbhi(); loadBahi(); loadBghi(); loadBfhi(); loadBe(); loadBd(); loadBc(); loadBb(); loadBa(); loadBg(); loadBf();
+    loadAahi(); loadAghi(); loadAfhi(); loadAehi(); loadAd(); loadAc(); loadAb(); loadAa(); loadAg(); loadAf(); loadAe();
+    loadnope1(); loadnope2(); loadnope3(); loadnope4();
+    loadbass();
+
+    var startTime, endTime, timeElapsed, displayTime, endDisplayTime;
+
+    //loading function
+    var loading;
+    loading = setInterval(function() {
+        let loadbarloading = document.getElementById('loadbarloading');
+        loadbarloading.style.width = (checkBuffers()/numberOfSounds) * 200 + 'px';
+        //before start
+        if(checkBuffers() == numberOfSounds)
+        {
+            allBuffersLoaded = true;
+            clearInterval(loading);
+            let loadtext = document.getElementById('loadtext');
+            loadtext.innerHTML = 'Click anywhere to begin.';
+            loadtext.style.left = '64px';
+            document.getElementById('loadbarloading').style.backgroundColor = '#97ffa1';
+            //210
+        }
+    }, 10);
+
+
+</script>
+
+</head>
+<body>
+    <div id="loadscreen" onclick="selectClefScreen()">
+        <div class="loaddiv">
+            <img id="titleimg" src="img/title.png">
+            <div id="loadbarfull"> </div>
+            <div id="loadbarloading"></div>
+            <p id="loadtext">Sounds are loading...</p>
+        </div>
+    </div>
+    <div id="clefscreen">
+        <div class="loaddiv">
+            <p id="description">Click on the musical pitches to spell as many words as you can in 10 minutes! Make sure <br> each word includes the pitch in <span id="blue">blue</span>.</p>
+            <h1>Select a Clef:</h1>
+            <table id="cleftable">
+                <tr>
+                    <td><img id="letter" src="img/clefs/letter.png" onclick="setClef(4)"></td>
+                  <td><img id="treble" src="img/clefs/treble.png" onclick="setClef(0)"></td>
+                  <td><img id="bass" src="img/clefs/bass.png" onclick="setClef(1)"></td>
+                  <td><img id="alto" src="img/clefs/alto.png" onclick="setClef(2)"></td>
+                </tr>
+                <tr id="names">
+                    <td>Letters</td>
+                  <td>Treble</td>
+                  <td>Bass</td>
+                  <td>Alto</td>
+                </tr>
+                <tr id="diff">
+                    <td>(Easy)</td>
+                    <td>(Normal)</td>
+                    <td>(Medium)</td>
+                    <td>(Hard)</td>   
+                </tr>
+            </table>
+            <button id="start" class="menu-button" onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+    <main id="window">
+        <div id="info">
+            <img src="img/title-small.png">
+            <img id="infobee" src="img/info-bee.png" onclick="toggleInfo()">
+        </div>
+        <div id="your-words">
+            <div id="dropdown">
+                <button id="button"><span id="score-text"></span></button>
+                <div id="found-words">
+                    <ul id="found-list">
+                        <li id="nowordsyet">No words found... yet!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="current-word">
+            <img id="clef" class="current-notes" src="img/clefs/clef-treble.png">
+        </div>
+        <div id="pitch-choices"></div>
+        <div id="menu">
+            <img id="time" src="img/timeoff.png" onclick="toggleTime()">
+            <button id="delete" class="menu-button" onclick="deleteLastPitch()">Delete</button>
+            <img src="img/shuffle.png" onclick="scrambleAllButCenterPitch()">
+            <button id="enter" class="menu-button" onclick="checkWord()">Enter</button>
+            <img id="sound" src="img/soundon.png" onclick="toggleSound()">
+        </div>
+        <div id="alert">
+            <p id="alert-text"></p>
+        </div>
+        <div id="infoscreen">
+            <p id="rules">How to Play</p>
+            <ul id='infolist'>
+                <li>Spell as many words as you can using the pitches below! You have 10 minutes.</li>
+                <li>Words must have at least three pitches.</li>
+                <li>Words must include the center pitch.</li>
+                <li>Pitches can be used more than once.</li>
+                <li>Click the Dice icon to scramble the letters.</li>
+                <li>Click the Clock icon to view how much time you've used.</li>
+            </ul>
+        </div>
+        <div id="timescreen">
+            <p id="time-left"></p>
+        </div>
+        <div id="endscreen">
+            <div class="loaddiv">
+                <h1 id="endhead">Time's Up!</h1>
+                <img id="endimg" src="img/endbee2.png">
+                <h2 id="yourtime">Your Time: </h2>
+                <p id="endtime"></p>
+                <h2 id="wordsfound">Words Found:</h2>
+                <p id="endwords"></p>
+                <h2 id="clefhead">Clef:</h2>
+                <p id="endclef"></p>
+                <h2 id="centerhead">Center Pitch:</h2>
+                <p id="centerpitch"></p>
+                <p id="encouragement">Refresh this page to try for a higher score, <br> or try a different clef!</p>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,422 @@
+@font-face {
+    font-family: 'Andika';
+    src: url(andika.ttf);
+}
+
+html, button {
+    background-color: #ffffff; 
+    font-family: 'Andika';
+}
+
+button {
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
+}
+
+body {
+    height: 720px;
+    width: 420px;
+    user-select: none;
+    margin: 0px;
+    padding: 0px; 
+    overflow:hidden;       
+}
+
+header {
+    height: 720px;
+    width: 420px;
+    background-color: grey;
+    position: absolute;
+    display: block;
+}
+
+main { 
+    height: 720px;
+    width: 420px;
+    background-image: url("img/bg.png");
+    background-size: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+    align-items: center;
+}
+
+main div {
+    border-radius: 5px;
+    flex: 1;
+    margin: 0.5rem;
+    width: 90%;
+}
+
+#current-word, #pitch-choices, #your-words
+{
+    background-color: rgba(255,255,255,0.4);
+    /* box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2); */
+    border: 1.5px solid rgba(0,0,0,0.2);
+}
+
+#info {
+    flex-grow: 0.25;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+}
+
+#info img {
+    height: 50px;
+}
+
+#infobee {
+    cursor: pointer;
+}
+
+#infoscreen {
+    display: none;
+    position: absolute;
+    top: 55px;
+    height: 200px;
+    width: 370px;
+    padding-right: 20px;
+    font-size: 0.8rem;
+    background-color: white;
+    border: 2px solid rgba(0,0,0,0.8);
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#infoscreen p { 
+    line-height: 8px;
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+#current-word {
+    background-color: rgb(255,255,255);
+    padding: 5px 0px;
+    flex-grow: 0.5;
+    display: flex;
+    justify-content: center;
+}
+
+#pitch-choices {
+    flex-grow: 2;
+}
+
+#menu {
+    padding-bottom: 10px;
+    flex-grow: 0.25;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#menu img {
+    height: 50px;
+    cursor: pointer;
+}
+
+.menu-button {
+    cursor: pointer;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+.menu-button:hover {
+    background-color: #1738a6;
+    color: white;
+}
+
+.menu-button:active {
+    background-color: #122c82;
+}
+
+.notes {
+    cursor: pointer;
+    position: fixed;
+    height: 90px;
+    width: 90px;
+    border-radius: 10%;
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
+}
+
+.notes:hover {
+    border: 2px solid rgba(0,0,0,0.7);
+}
+
+.notes:active {
+    opacity: 80%;
+}
+
+#i0 { top: 415px; left: 165px; }
+#i1 { top: 350px; left: 50px; }
+#i2 { top: 295px; left: 165px; }
+#i3 { top: 350px; left: 280px; }
+#i4 { top: 475px; left: 50px; }
+#i5 { top: 525px; left: 165px; }
+#i6 { top: 475px; left: 280px; }
+
+#i0:hover { top: 413px; left: 163px; }
+#i1:hover { top: 348px; left: 48px; }
+#i2:hover { top: 293px; left: 163px; }
+#i3:hover { top: 348px; left: 278px; }
+#i4:hover { top: 473px; left: 48px; }
+#i5:hover { top: 523px; left: 163px; }
+#i6:hover { top: 473px; left: 278px; }
+
+.current-notes {
+    height: 100px;
+}
+
+
+
+/* your words toolbar */
+#your-words {
+    flex-grow: 0.25;
+    display: flex;
+    padding-bottom: 5px;
+}
+
+#button {
+    background-color: #4e67b5;
+    /* rgb(241,89,36,0.3); */
+    color: white;
+    padding: 10px 10px;
+    border-radius: 10px;
+    flex: 1;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  #dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  #found-words {
+    display: none;
+    text-align: left;
+    position: absolute;
+    left: 8px;
+    border: 2px solid rgba(0,0,0,0.8);
+    background-color: #ccdaff;
+    min-width: 260px;
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  #found-words p {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  #dropdown:hover #found-words {
+    display: block;
+  }
+  
+#alert {
+    display: none;
+    text-align: center;
+    position: absolute;
+    top: 55px;
+    font-size: 1.1rem;
+    padding: 2px;
+    background-color: #97dea1;
+    border: 2px solid rgba(0,0,0,0.8);
+    min-width: 250px;
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#loadscreen {
+    visibility: visible;
+    position: absolute;
+    padding: 50px;
+    width: 320px;
+    height: 620px;
+    text-align: center;
+    /* background-color: #b79bc3; */
+    background-image: url("img/bg.png");
+    background-size: 100%;
+}
+
+.loaddiv {
+    position: absolute;
+    background-color: rgba(225,219,251,0.65);
+    top: 120px;
+    left: 30px;
+    width: 355px;
+    height: 420px;
+    border-radius: 10px;
+    border: 2px solid rgba(0,0,0,0.8);
+    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.4);
+}
+
+#titleimg {
+    width: 100%;
+    margin-top: 70px;
+}
+
+#loadtext {
+    /* all px relative to loadscreen */
+    font-size: 20px;
+    position: absolute;
+    left: 78px;
+    top: 230px;
+    color: black;
+}
+
+#loadbarfull, #loadbarloading {
+    position: absolute;
+    border: 2px solid black;
+    border-radius: 5px;
+    left: 72.5px;
+    top: 300px;
+    background-color: #b79bc3;
+    height: 30px;
+    width: 200px;
+    text-align: center;
+}
+
+#loadbarfull {
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.4);
+}
+
+#loadbarloading {
+    background-color: #f15924;
+}
+
+#blue {
+    font-weight: extra;
+    color: #4e67b5;
+}
+
+
+#timescreen {
+    position: absolute;
+    top: 575px;
+    left: 25px;
+    width: 50px;
+    height: 35px;
+    padding: 0px;
+    border: 2px solid rgba(0,0,0,0.2);
+    background-color: rgba(255,255,255,0.6);
+    display: none;
+    text-align: center;
+    line-height: 0px;
+}
+
+
+/* loading stuff */
+#clefscreen {
+    display: none;
+    position: absolute;
+    padding: 50px;
+    width: 320px;
+    height: 620px;
+    text-align: center;
+    background-image: url("img/bg.png");
+    background-size: 100%;
+}
+
+
+#description {
+    padding: 0px;
+    margin: 0px;
+    line-height: 1.4;
+    font-size: 16px;
+    word-wrap: normal;
+    color: black;
+}
+
+#clefscreen .loaddiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#clefscreen img {
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid rgba(0,0,0,0);
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.4);
+}
+
+#cleftable {
+    margin: 10px;
+}
+
+#names {
+    font-size: 1.2rem;
+}
+
+
+#clefscreen h1 {
+    font-size: 1.4rem;
+    margin: 0px;
+}
+
+#diff {
+    font-size: 0.9rem;
+    font-style: oblique;
+}
+
+td { padding: 0px 15px; }
+
+#start {
+    margin-top: -10px;
+    visibility: hidden;
+}
+
+#endscreen {
+    display: none;
+    position: absolute;
+    padding: 50px;
+    width: 320px;
+    height: 620px;
+    margin: 0px;
+    text-align: center;
+    background-image: url("img/bg.png");
+    background-size: 100%;
+}
+
+#endscreen img {
+    width: 80%;
+    margin: 0px;
+}
+
+#endscreen h1 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+#endscreen p {
+    margin-top: 0px;
+}
+
+#endscreen h2 {
+    font-size: 1.0rem;
+    line-height: 1.0rem;
+    margin-top: 10px;
+}
+
+#endtime, #endwords, #endclef, #centerpitch {
+    font-size: 1.5rem;
+    line-height: 0.8rem;
+    font-weight: bold;
+
+}
+
+#endscreen #encouragement {
+    margin-top: 15px;
+    display: none;
+
+}
