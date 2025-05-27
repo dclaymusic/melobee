@@ -30,6 +30,7 @@ header {
 }
 
 main { 
+    margin: auto;
     height: 720px;
     width: 420px;
     background-image: url("img/bg.png");
